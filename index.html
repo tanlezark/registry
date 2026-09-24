@@ -15,19 +15,24 @@ main{max-width:640px;margin:0 auto;padding:4rem 1.5rem 5rem}
 h1{font:600 clamp(2.4rem,8vw,3.6rem)/1.05 Fraunces,Georgia,serif;letter-spacing:-.02em;margin:0 0 1.25rem}
 .intro{max-width:52ch;margin:0 0 3rem}
 .intro p{margin:0 0 1rem}
-h2{font:600 1.05rem/1.3 "Instrument Sans",system-ui,sans-serif;color:var(--muted);margin:2.75rem 0 .75rem}
+.room{font-size:1rem;margin:2.25rem 0;padding:1.25em 1.5em .4em;border:2px solid #000;border-radius:18px;background:rgba(255,255,255,.4);transition:font-size .3s,margin .3s}
+.room.done{font-size:.75rem;margin:1rem 0}
+.room-head{display:flex;justify-content:space-between;align-items:baseline;gap:1em;margin-bottom:.6em}
+h2{font:600 2em/1.1 Fraunces,Georgia,serif;letter-spacing:-.01em;margin:0}
+.count{color:var(--muted);font-size:.85em;white-space:nowrap}
 ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-li{border-bottom:1px solid var(--line);padding:1.1rem 0}
+li{border-bottom:1px solid var(--line);padding:1.1em 0}
+li:last-child{border-bottom:0}
 .row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
-.name{font:600 1.25rem/1.3 Fraunces,Georgia,serif}
-.note{color:var(--muted);font-size:.95rem;margin:.15rem 0 0}
+.name{font:600 1.25em/1.3 Fraunces,Georgia,serif}
+.note{color:var(--muted);font-size:.95em;margin:.15em 0 0}
 button{font:500 .95rem "Instrument Sans",system-ui,sans-serif;border-radius:999px;padding:.5rem 1.1rem;cursor:pointer;white-space:nowrap;border:1px solid var(--accent);background:transparent;color:var(--accent)}
 button:hover{background:var(--accent);color:var(--accent-ink)}
 button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 button.solid{background:var(--accent);color:var(--accent-ink)}
 .taken .name,.taken .note{text-decoration:line-through;color:var(--muted);font-weight:400}
-.link{display:inline-block;margin-top:.2rem;font-size:.9rem;color:var(--accent)}
-.tag{color:var(--muted);font-size:.95rem;white-space:nowrap}
+.link{display:inline-block;margin-top:.2em;font-size:.9em;color:var(--accent)}
+.tag{color:var(--muted);font-size:.95em;white-space:nowrap}
 form{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.9rem}
 input,textarea{flex:1 1 200px;font:inherit;font-size:.95rem;padding:.5rem .8rem;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--ink)}
 textarea{flex-basis:100%;resize:vertical;min-height:4.5rem}
@@ -39,16 +44,16 @@ footer{margin-top:2.5rem;color:var(--muted);font-size:.95rem}
 <main>
 <h1>G&amp;T</h1>
 <div class="intro">
-<p>So you want to get us something. Thanks.</p>
-<p>We're fond of yellow things and handcrafted ceramics.</p>
+<p>So you want to get us something. Thank you, we really do appreciate it..</p>
+  <p>But you don't know what to get, and so here you are.</p>
   <br>
   <p>If you need more than info than that, read on..</p>
-  <p>Tristan already owns much of the utilitarian bachelor pad survival gear, so we're looking to get some more homely bits to set us up.</p>
-<p>The below are some of the things we're after.</p>
+  <p>Tristan already owns much of the utilitarian bachelor pad survival gear, so we're looking to things with a bit more character.</p>
+  <p>We're fond of yellow and handcrafted ceramics, but if that's too vague, below we have a more specific list of the various bits that we would  particularly appreciate.</p>
 </div>
 <div id="list"></div>
 <p class="msg" id="status" role="status"></p>
-<footer>Thank you. We are so glad you are coming.</footer>
+<footer>Thank you. We are so glad you are coming. <br> If you've accidentally selected something, let us know and we can undo your selection.</footer>
 </main>
 <script>
 // 1. Google Form and Sheet settings. Leave FORM_URL empty to preview locally.
@@ -61,24 +66,40 @@ const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn4-SZ7J
 // 2. Edit your items here. Each id must be unique and should not change once guests start claiming.
 const ITEMS = [
   // group, id, name, note (the blurb), link (optional), multi (true = many people can claim it)
-  {group:"Kitchen", id:"microwave",  name:"Microwave",  note:"Microwave go brrrrr"},
-  {group:"Kitchen", id:"dinnerset",  name:"Dinner set", note:"Cute or Yellow or both"},
-  {group:"Kitchen", id:"cutlery",    name:"Cutlery"},
-  {group:"Kitchen", id:"airfryer",   name:"Air fryer", note: "All the better for reheating you with.."},
-  {group:"Kitchen", id:"knives",     name:"Knife block and knives"},
-  {group:"Kitchen", id:"boards",     name:"Cutting boards"},
-  {group:"Kitchen", id:"tablecloth", name:"Table cloths", note:"Gotta hide that ugly table"},
-  {group:"Kitchen", id:"table", name:"Dining Table", note:"For when we want to eat like civilised people"},
+  {group:"Kitchen", id:"microwave", name:"Microwave", note:"Tristan's microwave is seeing the light at the end of the tunnel. We'd love one so that we can heat up milk for our hot choccys."},
+  {group:"Kitchen", id:"dinnerset", name:"Dinner set", note:"Cute or Yellow or both"},
+  {group:"Kitchen", id:"cutlery", name:"Cutlery"},
+  {group:"Kitchen", id:"airfryer", name:"Air fryer", note:"Going to the darkside"},
+  {group:"Kitchen", id:"tablecloth", name:"Table cloths", note:"Gotta cover up that ugly table"},
+  {group:"Kitchen", id:"knives", name:"Knife block and knives", note:"We'd (George) would love a set that has at least a scalloped bread knife and a range of a few different knife sizes."},
+  {group:"Kitchen", id:"boards", name:"Cutting boards", note:"Preferably wooden"},
   {group:"Kitchen", id:"standmixer", name:"Stand mixer", note:"Very expensive. Definitely not essential."},
-  {group:"Loungeroom", id:"tv",        name:"TV"},
-  {group:"Loungeroom", id:"bookshelf", name:"Heirloom quality bookshelf"},
+  {group:"Kitchen", id:"storage", name:"Storage containers", note:"For things like flour, sugar, pasta"},
+  {group:"Kitchen", id:"bottle", name:"Glass bottle with stopper", note:"Not fussy about brand. Link is eg. 2x pls", link:"https://www.kitchenwarehouse.com.au/product/bormioli-rocco-swing-bottle-with-white-top-500ml"},
+  {group:"Kitchen", id:"thermometer", name:"Thermometer", note:"For cooking meat, sugar temps, etc."},
+  {group:"Kitchen", id:"spicerack", name:"Spice rack", note:"For when we want things to get a little spicy"},
+  {group:"Kitchen", id:"cheeseknives", name:"Cheese knives", note:"For superior cutting of the cheese."},
+  {group:"Kitchen", id:"diningtable", name:"Dining table", note:"For when we want to eat like civilised people. Or do craft."},
+  {group:"Kitchen", id:"ovenmitts", name:"Oven mitts", note:"Go wild."},
+  {group:"Kitchen", id:"garlicpress", name:"Garlic press", note:"For when we're worried about vampires coming to visit", link:"https://www.kitchenwarehouse.com.au/product/oxo-good-grips-garlic-press-with-built-in-cleaner"},
+  {group:"Kitchen", id:"castiron", name:"Cast iron pan", note:"I'm particular. Will research"},
+  {group:"Kitchen", id:"stainless", name:"Stainless steel pan", note:"I'm particular. Will research"},
+  {group:"Living", id:"stickvac", name:"Stick vacuum"},
+  {group:"Living", id:"tv", name:"TV", note:"We do not own a TV, and we would love to have one."},
+  {group:"Living", id:"bookshelf", name:"Heirloom quality bookshelf"},
+  {group:"Living", id:"wallclock", name:"Wall clock", note:"Something with a fun design!"},  
   {group:"Bathroom", id:"duck", name:"Rubber duck", note:"For all our bathroom needs."},
-  {group:"Outdoor", id:"seating", name:"Outdoor seating arrangement", note:"We have a whole outdoor undercover patio"},
-  {group:"Outdoor", id:"tent",    name:"Tent", note:"We go camp. Is good tend. Camp long time. No go home.", link:"https://www.snowys.com.au/instant-up-4p-gold-series-evo-tent"},
-  {group:"Outdoor", id:"outdooracc", name:"Outdoor accessories", note:"Fun things for outside!"},
-  {group:"Around the house", id:"stickvac", name:"Stick vacuum"},
-  {group:"Or chip in", id:"dishwasher", name:"Dishwasher fund", note:"gib cash money dollarbucks", multi:true},
-  {group:"Or chip in", id:"aircon", name:"AirCon fund", note:"They say it's going to be a hot summer..", multi:true}
+  {group:"Bathroom", id:"toiletbrush", name:"Toilet brush and holder"},
+  {group:"Bedroom", id:"sheets1", name:"Queen sheet set 1", note:"For putting on the bed"},
+  {group:"Bedroom", id:"sheets2", name:"Queen sheet set 2", note:"For when the other sheets are in the wash."},
+  {group:"Outdoor", id:"chairs", name:"Outdoor chairs", note:"We have a whole outdoor undercover patio"},
+  {group:"Outdoor", id:"outdoortable", name:"Outdoor table", note:"To put the chairs around"},
+  {group:"Outdoor", id:"trinkets", name:"Outdoor trinkets", note:"Fun things for outside!", multi:true},
+  {group:"Outdoor", id:"bbq", name:"BBQ", note:"For tasty BBQing"},
+  {group:"Outdoor", id:"bbqequip", name:"BBQ equipment", note:"Tongs, BBQ spatula, etc."},
+  {group:"Outdoor", id:"gnome", name:"Garden gnome", note:"A friend for all the Bluey Gnomes"},
+  {group:"Outdoor", id:"tent", name:"Tent", note:"We go camp. Is good tent. Camp long time. No go home.", link:"https://www.snowys.com.au/instant-up-4p-gold-series-evo-tent"},
+  {group:"Chip in fund", id:"dishwasherfund", name:"Dishwasher fund", note:"gib cash money dollarbucks", multi:true}
 ];
 
 const list = document.getElementById("list"), statusEl = document.getElementById("status");
@@ -95,11 +116,19 @@ function render(){
     g.items.push(it);
   }
   for (const g of groups){
-    const h = document.createElement("h2"); h.textContent = g.name; list.append(h);
-    const ul = document.createElement("ul"); list.append(ul);
+    const isTaken = it => !it.multi && claimed.has(it.id);
+    const n = g.items.filter(isTaken).length;
+    const sec = document.createElement("section");
+    sec.className = "room" + (n === g.items.length ? " done" : "");
+    const head = document.createElement("div"); head.className = "room-head";
+    const h = document.createElement("h2"); h.textContent = g.name;
+    const c = document.createElement("span"); c.className = "count";
+    c.textContent = n === g.items.length ? "All taken" : n + " of " + g.items.length + " taken";
+    head.append(h, c); sec.append(head);
+    const ul = document.createElement("ul"); sec.append(ul);
     for (const it of g.items){
       const li = document.createElement("li");
-      const taken = !it.multi && claimed.has(it.id);
+      const taken = isTaken(it);
       if (taken) li.className = "taken";
       li.innerHTML = '<div class="row"><div class="info"><div class="name"></div><p class="note"></p></div></div>';
       li.querySelector(".name").textContent = it.name;
@@ -119,6 +148,7 @@ function render(){
       }
       ul.append(li);
     }
+    list.append(sec);
   }
 }
 
