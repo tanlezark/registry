@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our wedding registry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f7f4;--ink:#1f2a24;--muted:#66706a;--line:#d9ded6;--accent:#5b2a4a;--accent-ink:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#171c19;--ink:#e8ece6;--muted:#95a09a;--line:#2c3630;--accent:#d9a3c6;--accent-ink:#171c19}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 "Instrument Sans",system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:4rem 1.5rem 5rem}
+h1{font:600 clamp(2.4rem,8vw,3.6rem)/1.05 Fraunces,Georgia,serif;letter-spacing:-.02em;margin:0 0 1.25rem}
+.intro{color:var(--muted);max-width:52ch;margin:0 0 3rem}
+ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+li{border-bottom:1px solid var(--line);padding:1.1rem 0}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.name{font:600 1.25rem/1.3 Fraunces,Georgia,serif}
+.note{color:var(--muted);font-size:.95rem;margin:.15rem 0 0}
+button{font:500 .95rem "Instrument Sans",system-ui,sans-serif;border-radius:999px;padding:.5rem 1.1rem;cursor:pointer;white-space:nowrap;border:1px solid var(--accent);background:transparent;color:var(--accent)}
+button:hover{background:var(--accent);color:var(--accent-ink)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button.solid{background:var(--accent);color:var(--accent-ink)}
+.taken .name,.taken .note{text-decoration:line-through;color:var(--muted);font-weight:400}
+.tag{color:var(--muted);font-size:.95rem;white-space:nowrap}
+form{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.9rem}
+input{flex:1 1 200px;font:inherit;font-size:.95rem;padding:.5rem .8rem;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.msg{color:var(--muted);font-size:.9rem;margin-top:.5rem}
+footer{margin-top:2.5rem;color:var(--muted);font-size:.95rem}
+</style>
+</head>
+<body>
+<main>
+<h1>G &amp; T</h1>
+<p class="intro">Buy us things.</p>
+<ul id="list"></ul>
+<p class="msg" id="status" role="status"></p>
+<footer>Thank you. We are so glad you are coming.</footer>
+</main>
+<script>
+// 1. Paste your Apps Script web app URL between the quotes. Leave empty to preview locally.
+const SCRIPT_URL = "";
+
+// 2. Edit your items here. Each id must be unique and should not change once guests start claiming.
+const ITEMS = [
+  {id:"towels",  name:"Bath towels",       note:"Any brand, a neutral colour, roughly four."},
+  {id:"pans",    name:"A good frying pan", note:"Whatever you would use yourself, about 28 cm."},
+  {id:"linen",   name:"Bed linen",         note:"Queen size, cotton or linen, plain colours."},
+  {id:"dishes",  name:"Serving dishes",    note:"Something for sharing at the table."},
+  {id:"glasses", name:"Wine glasses",      note:"A set of six, no need to match anything."}
+];
+
+const list = document.getElementById("list"), statusEl = document.getElementById("status");
+let claimed = new Set();
+
+function say(t){ statusEl.textContent = t; }
+
+function render(){
+  list.innerHTML = "";
+  for (const it of ITEMS){
+    const li = document.createElement("li");
+    const taken = claimed.has(it.id);
+    if (taken) li.className = "taken";
+    li.innerHTML = '<div class="row"><div><div class="name"></div><p class="note"></p></div></div>';
+    li.querySelector(".name").textContent = it.name;
+    li.querySelector(".note").textContent = it.note;
+    const row = li.querySelector(".row");
+    if (taken){
+      const s = document.createElement("span"); s.className = "tag"; s.textContent = "Taken"; row.append(s);
+    } else {
+      const b = document.createElement("button"); b.textContent = "I'll get this";
+      b.onclick = () => openForm(li, it, b); row.append(b);
+    }
+    list.append(li);
+  }
+}
+
+function openForm(li, it, btn){
+  btn.hidden = true;
+  const f = document.createElement("form");
+  f.innerHTML = '<input aria-label="Your name (optional)" placeholder="Your name (optional)" autocomplete="name"><button class="solid" type="submit">Confirm</button><button type="button">Cancel</button>';
+  const [input, ok, cancel] = f.elements;
+  cancel.onclick = () => { f.remove(); btn.hidden = false; };
+  f.onsubmit = async e => {
+    e.preventDefault(); ok.disabled = true; ok.textContent = "Saving";
+    const result = await claim(it, input.value.trim());
+    if (result === "ok") say("Thank you. " + it.name + " is marked as yours.");
+    else if (result === "taken") say("Someone just claimed " + it.name + ". Please pick another.");
+    else { say("That did not save. Please try again in a moment."); f.remove(); btn.hidden = false; return; }
+    render();
+  };
+  li.append(f); input.focus();
+}
+
+async function claim(it, name){
+  if (!SCRIPT_URL){ claimed.add(it.id); return "ok"; }
+  try {
+    const r = await fetch(SCRIPT_URL, {method:"POST", body: JSON.stringify({id:it.id, item:it.name, name})});
+    const d = await r.json();
+    if (d.claimed) claimed = new Set(d.claimed);
+    if (d.ok) return "ok";
+    return d.taken ? "taken" : "error";
+  } catch(e){ return "error"; }
+}
+
+async function load(){
+  render();
+  if (!SCRIPT_URL) return;
+  try {
+    const d = await (await fetch(SCRIPT_URL)).json();
+    claimed = new Set(d.claimed || []);
+    render();
+  } catch(e){ say("Could not check what has been taken. Please refresh."); }
+}
+load();
+</script>
+</body>
+</html>
