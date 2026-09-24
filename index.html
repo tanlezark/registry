@@ -61,21 +61,23 @@ const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn4-SZ7J
 const ITEMS = [
   // group, id, name, note (the blurb), link (optional), multi (true = many people can claim it)
   {group:"Kitchen", id:"microwave",  name:"Microwave",  note:"Microwave go brrrrr"},
-  {group:"Kitchen", id:"dinnerset",  name:"Dinner set"},
+  {group:"Kitchen", id:"dinnerset",  name:"Dinner set", note:"Cute or Yellow or both"},
   {group:"Kitchen", id:"cutlery",    name:"Cutlery"},
-  {group:"Kitchen", id:"airfryer",   name:"Air fryer"},
+  {group:"Kitchen", id:"airfryer",   name:"Air fryer", note: "All the better for reheating you with.."},
   {group:"Kitchen", id:"knives",     name:"Knife block and knives"},
   {group:"Kitchen", id:"boards",     name:"Cutting boards"},
-  {group:"Kitchen", id:"tablecloth", name:"Table cloths"},
+  {group:"Kitchen", id:"tablecloth", name:"Table cloths", note:"Gotta hide that ugly table"},
+  {group:"Kitchen", id:"table", name:"Dining Table", note:"For when we want to eat like civilised people"},
   {group:"Kitchen", id:"standmixer", name:"Stand mixer", note:"Very expensive. Definitely not essential."},
   {group:"Loungeroom", id:"tv",        name:"TV"},
   {group:"Loungeroom", id:"bookshelf", name:"Heirloom quality bookshelf"},
   {group:"Bathroom", id:"duck", name:"Rubber duck", note:"For all our bathroom needs."},
   {group:"Outdoor", id:"seating", name:"Outdoor seating arrangement", note:"We have a whole outdoor undercover patio"},
   {group:"Outdoor", id:"tent",    name:"Tent", note:"We go camp. Is good tend. Camp long time. No go home.", link:"https://www.snowys.com.au/instant-up-4p-gold-series-evo-tent"},
-  {group:"Outdoor", id:"outdooracc", name:"Outdoor accessories", note:"Fun things for outside!", multi:true},
+  {group:"Outdoor", id:"outdooracc", name:"Outdoor accessories", note:"Fun things for outside!"},
   {group:"Around the house", id:"stickvac", name:"Stick vacuum"},
-  {group:"Or chip in", id:"dishwasherfund", name:"Dishwasher fund", note:"gib cash money dollarbucks", multi:true}
+  {group:"Or chip in", id:"dishwasher", name:"Dishwasher fund", note:"gib cash money dollarbucks", multi:true},
+  {group:"Or chip in", id:"aircon", name:"AirCon fund", note:"They say it's going to be a hot summer..", multi:true}
 ];
 
 const list = document.getElementById("list"), statusEl = document.getElementById("status");
