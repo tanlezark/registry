@@ -15,6 +15,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 "Inst
 main{max-width:640px;margin:0 auto;padding:4rem 1.5rem 5rem}
 h1{font:600 clamp(2.4rem,8vw,3.6rem)/1.05 Fraunces,Georgia,serif;letter-spacing:-.02em;margin:0 0 1.25rem}
 .intro{color:var(--muted);max-width:52ch;margin:0 0 3rem}
+h2{font:600 1.05rem/1.3 "Instrument Sans",system-ui,sans-serif;color:var(--muted);margin:2.75rem 0 .75rem}
 ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 li{border-bottom:1px solid var(--line);padding:1.1rem 0}
 .row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
@@ -35,8 +36,8 @@ footer{margin-top:2.5rem;color:var(--muted);font-size:.95rem}
 <body>
 <main>
 <h1>G &amp; T</h1>
-<p class="intro">Buy us things.</p>
-<ul id="list"></ul>
+<p class="intro">Give us stuff.</p>
+<div id="list"></div>
 <p class="msg" id="status" role="status"></p>
 <footer>Thank you. We are so glad you are coming.</footer>
 </main>
@@ -46,11 +47,18 @@ const SCRIPT_URL = "";
 
 // 2. Edit your items here. Each id must be unique and should not change once guests start claiming.
 const ITEMS = [
-  {id:"towels",  name:"Bath towels",       note:"Any brand, a neutral colour, roughly four."},
-  {id:"pans",    name:"A good frying pan", note:"Whatever you would use yourself, about 28 cm."},
-  {id:"linen",   name:"Bed linen",         note:"Queen size, cotton or linen, plain colours."},
-  {id:"dishes",  name:"Serving dishes",    note:"Something for sharing at the table."},
-  {id:"glasses", name:"Wine glasses",      note:"A set of six, no need to match anything."}
+  {group:"The big things", id:"microwave",  name:"Microwave",  note:"Happy for a few of you to go in together."},
+  {group:"The big things", id:"dishwasher", name:"Dishwasher", note:"Happy for a few of you to go in together."},
+  {group:"The big things", id:"tv",         name:"TV",         note:"Happy for a few of you to go in together."},
+  {group:"Kitchen and table", id:"dinnerset", name:"Dinner set"},
+  {group:"Kitchen and table", id:"cutlery",   name:"Cutlery"},
+  {group:"Kitchen and table", id:"gravyjug",  name:"Gravy jug"},
+  {group:"Kitchen and table", id:"airfryer",  name:"Air fryer"},
+  {group:"Kitchen and table", id:"knives",    name:"Knife block and knives"},
+  {group:"Kitchen and table", id:"boards",    name:"Cutting boards"},
+  {group:"Kitchen and table", id:"tablecloth",name:"Table cloths"},
+  {group:"Around the house", id:"stickvac", name:"Stick vacuum"},
+  {group:"Around the house", id:"tent",     name:"Tent"}
 ];
 
 const list = document.getElementById("list"), statusEl = document.getElementById("status");
@@ -60,13 +68,20 @@ function say(t){ statusEl.textContent = t; }
 
 function render(){
   list.innerHTML = "";
+  let ul = null, last = null;
   for (const it of ITEMS){
+    if (it.group !== last){
+      last = it.group;
+      const h = document.createElement("h2"); h.textContent = it.group; list.append(h);
+      ul = document.createElement("ul"); list.append(ul);
+    }
     const li = document.createElement("li");
     const taken = claimed.has(it.id);
     if (taken) li.className = "taken";
     li.innerHTML = '<div class="row"><div><div class="name"></div><p class="note"></p></div></div>';
     li.querySelector(".name").textContent = it.name;
-    li.querySelector(".note").textContent = it.note;
+    const note = li.querySelector(".note");
+    if (it.note) note.textContent = it.note; else note.remove();
     const row = li.querySelector(".row");
     if (taken){
       const s = document.createElement("span"); s.className = "tag"; s.textContent = "Taken"; row.append(s);
@@ -74,7 +89,7 @@ function render(){
       const b = document.createElement("button"); b.textContent = "I'll get this";
       b.onclick = () => openForm(li, it, b); row.append(b);
     }
-    list.append(li);
+    ul.append(li);
   }
 }
 
