@@ -136,9 +136,17 @@ function openForm(li, it, btn){
   li.append(f); input.focus();
 }
 
-const KEY = "registry-mine";
-function mine(){ try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){ return []; } }
-function remember(id){ try { localStorage.setItem(KEY, JSON.stringify([...new Set([...mine(), id])])); } catch(e){} }
+// A guest's own claims are remembered on their device for 30 minutes, to cover the delay
+// before the published Sheet catches up. After that, the Sheet is the only source of truth.
+const KEY = "registry-mine-v2", KEEP_MS = 30 * 60 * 1000;
+function mine(){
+  try { const o = JSON.parse(localStorage.getItem(KEY) || "{}"), now = Date.now();
+        return Object.keys(o).filter(k => now - o[k] < KEEP_MS); } catch(e){ return []; }
+}
+function remember(id){
+  try { const o = JSON.parse(localStorage.getItem(KEY) || "{}"); o[id] = Date.now();
+        localStorage.setItem(KEY, JSON.stringify(o)); } catch(e){}
+}
 
 async function claim(it, name, notes){
   if (!it.multi) claimed.add(it.id);
