@@ -9,7 +9,7 @@
     "group": "Kitchen",
     "id": "castironpan",
     "name": "Cast iron pan",
-    "note": "I'm particular. Will research"
+    "note": "George is very picky, more details TBD. ~~THIS NEEDS TO BE FILLED IN~~"
   },
   {
     "group": "Kitchen",
@@ -47,7 +47,7 @@
     "group": "Kitchen",
     "id": "microwave",
     "name": "Microwave",
-    "note": "Tristan's microwave is seeing the light at the end of the tunnel. We'd love one so that we can heat up milk for our hot choccys."
+    "note": "Tristan's marketplace microwave is seeing the light at the end of the tunnel. We'd love one so that we can heat up milk for our hot choccys."
   },
   {
     "group": "Kitchen",
@@ -77,7 +77,7 @@
     "group": "Kitchen",
     "id": "stainlesssteelpan",
     "name": "Stainless steel pan",
-    "note": "I'm particular. Will research"
+    "note": "George is very picky, more details TBD. ~~THIS NEEDS TO BE FILLED IN~~"
   },
   {
     "group": "Kitchen",
@@ -160,9 +160,9 @@
   },
   {
     "group": "Outdoor",
-    "id": "bbq",
-    "name": "BBQ",
-    "note": "For tasty BBQing"
+    "id": "bbqplates",
+    "name": "BBQ plates",
+    "note": "Our new house comes with a brick woodfire BBQ.. that's a little out of repair."
   },
   {
     "group": "Outdoor",
@@ -174,8 +174,7 @@
     "group": "Outdoor",
     "id": "gardengnome",
     "name": "Garden Gnome",
-    "note": "A friend for all the Bluey Gnomes",
-    "multi": true
+    "note": "A friend for all the Bluey Gnomes"
   },
   {
     "group": "Outdoor",
@@ -228,8 +227,8 @@
   },
   {
     "group": "Adventure",
-    "id": "adoublefoamcampmattress",
-    "name": "A double foam camp mattress",
+    "id": "afoamcampdoublemattress",
+    "name": "A foam camp double mattress",
     "note": "Tristan's swag won't fit both of us."
   },
   {
