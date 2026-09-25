@@ -12,10 +12,14 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 "Instrument Sans",system-ui,sans-serif}
 main{max-width:640px;margin:0 auto;padding:4rem 1.5rem 5rem}
+@media (min-width:900px){main{max-width:1360px}}
+#list{display:grid;grid-template-columns:1fr;gap:0 1.5rem;align-items:start}
+@media (min-width:900px){#list{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1300px){#list{grid-template-columns:repeat(3,1fr)}}
 h1{font:600 clamp(2.4rem,8vw,3.6rem)/1.05 Fraunces,Georgia,serif;letter-spacing:-.02em;margin:0 0 1.25rem}
-.intro{max-width:52ch;margin:0 0 3rem}
+.intro{max-width:60ch;margin:0 0 3rem}
 .intro p{margin:0 0 1rem}
-.room{font-size:1rem;margin:2.25rem 0;padding:1.25em 1.5em .4em;border:2px solid #000;border-radius:18px;background:rgba(255,255,255,.4);transition:font-size .3s,margin .3s}
+.room{font-size:1rem;margin:0 0 1.5rem;padding:1.25em 1.5em .4em;border:2px solid #000;border-radius:18px;background:rgba(255,255,255,.4);transition:font-size .3s,margin .3s}
 .room.done{font-size:.75rem;margin:1rem 0}
 .room-head{display:flex;justify-content:space-between;align-items:baseline;gap:1em;margin-bottom:.6em}
 h2{font:600 2em/1.1 Fraunces,Georgia,serif;letter-spacing:-.01em;margin:0}
@@ -68,7 +72,7 @@ const ITEMS = [
   // group, id, name, note (the blurb), link (optional), multi (true = many people can claim it)
   {group:"Kitchen", id:"microwave", name:"Microwave", note:"Tristan's microwave is seeing the light at the end of the tunnel. We'd love one so that we can heat up milk for our hot choccys."},
   {group:"Kitchen", id:"dinnerset", name:"Dinner set", note:"Cute or Yellow or both"},
-  {group:"Kitchen", id:"cutlery", name:"Cutlery"},
+  {group:"Kitchen", id:"cutlery", name:"Cutlery", note:"Blunt the knives and bend the forks.."},
   {group:"Kitchen", id:"airfryer", name:"Air fryer", note:"Going to the darkside"},
   {group:"Kitchen", id:"tablecloth", name:"Table cloths", note:"Gotta cover up that ugly table"},
   {group:"Kitchen", id:"knives", name:"Knife block and knives", note:"We'd (George) would love a set that has at least a scalloped bread knife and a range of a few different knife sizes."},
@@ -84,22 +88,23 @@ const ITEMS = [
   {group:"Kitchen", id:"garlicpress", name:"Garlic press", note:"For when we're worried about vampires coming to visit", link:"https://www.kitchenwarehouse.com.au/product/oxo-good-grips-garlic-press-with-built-in-cleaner"},
   {group:"Kitchen", id:"castiron", name:"Cast iron pan", note:"I'm particular. Will research"},
   {group:"Kitchen", id:"stainless", name:"Stainless steel pan", note:"I'm particular. Will research"},
-  {group:"Living", id:"stickvac", name:"Stick vacuum"},
-  {group:"Living", id:"tv", name:"TV", note:"We do not own a TV, and we would love to have one."},
-  {group:"Living", id:"bookshelf", name:"Heirloom quality bookshelf"},
-  {group:"Living", id:"wallclock", name:"Wall clock", note:"Something with a fun design!"},  
-  {group:"Bathroom", id:"duck", name:"Rubber duck", note:"For all our bathroom needs."},
-  {group:"Bathroom", id:"toiletbrush", name:"Toilet brush and holder"},
-  {group:"Bedroom", id:"sheets1", name:"Queen sheet set 1", note:"For putting on the bed"},
+  {group:"Kitchen", id:"papertowel", name:"Paper towel holder", note:"Wrangling the absorbable squares requires an extra tool"},
+  {group:"Kitchen", id:"sandwichpress", name:"Sandwich press", note:"For excellent toasties"},
   {group:"Bedroom", id:"sheets2", name:"Queen sheet set 2", note:"For when the other sheets are in the wash."},
+  {group:"Living", id:"stickvac", name:"Stick vacuum", note:"A gift that really sucks"},
+  {group:"Living", id:"bookshelf", name:"Heirloom quality bookshelf", note:"\ud83d\udc40"},
+  {group:"Living", id:"wallclock", name:"Wall clock", note:"Something with a fun design!"},
+  {group:"Bedroom", id:"sheets1", name:"Queen sheet set 1", note:"For putting on the bed"},
+  {group:"Bathroom", id:"duck", name:"Rubber duck", note:"For all our bathroom needs.", multi:true},
+  {group:"Outdoor", id:"tent", name:"Tent", note:"We go camp. Is good tent. Camp long time. No go home.", link:"https://www.snowys.com.au/instant-up-4p-gold-series-evo-tent"},
   {group:"Outdoor", id:"chairs", name:"Outdoor chairs", note:"We have a whole outdoor undercover patio"},
   {group:"Outdoor", id:"outdoortable", name:"Outdoor table", note:"To put the chairs around"},
-  {group:"Outdoor", id:"trinkets", name:"Outdoor trinkets", note:"Fun things for outside!", multi:true},
+  {group:"Outdoor", id:"trinkets", name:"Outdoor trinkets", note:"Fun things for outside!"},
   {group:"Outdoor", id:"bbq", name:"BBQ", note:"For tasty BBQing"},
   {group:"Outdoor", id:"bbqequip", name:"BBQ equipment", note:"Tongs, BBQ spatula, etc."},
-  {group:"Outdoor", id:"gnome", name:"Garden gnome", note:"A friend for all the Bluey Gnomes"},
-  {group:"Outdoor", id:"tent", name:"Tent", note:"We go camp. Is good tent. Camp long time. No go home.", link:"https://www.snowys.com.au/instant-up-4p-gold-series-evo-tent"},
-  {group:"Chip in fund", id:"dishwasherfund", name:"Dishwasher fund", note:"gib cash money dollarbucks", multi:true}
+  {group:"Outdoor", id:"gnome", name:"Garden gnome", note:"A friend for all the Bluey Gnomes", multi:true},
+  {group:"Books", id:"tolkien", name:"The History of Middle Earth by Christopher Tolkien"},
+  {group:"Chip in fund", id:"dishwasher", name:"Dishwasher", note:"Our new place comes with a gaping hole where the dishwasher ought go", multi:true}
 ];
 
 const list = document.getElementById("list"), statusEl = document.getElementById("status");
