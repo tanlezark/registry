@@ -1,37 +1,242 @@
 [
-  {group:"Kitchen", id:"microwave", name:"Microwave", note:"Tristan's microwave is seeing the light at the end of the tunnel. We'd love one so that we can heat up milk for our hot choccys."},
-  {group:"Kitchen", id:"airfryer", name:"Air fryer", note:"Going to the darkside"},
-  {group:"Kitchen", id:"knives", name:"Knife block and knives", note:"We'd (George) would love a set that has at least a scalloped bread knife and a range of a few different knife sizes."},
-  {group:"Kitchen", id:"boards", name:"Cutting boards", note:"Preferably wooden"},
-  {group:"Kitchen", id:"standmixer", name:"Stand mixer", note:"Very expensive. Definitely not essential."},
-  {group:"Kitchen", id:"storage", name:"Storage containers", note:"For things like flour, sugar, pasta"},
-  {group:"Kitchen", id:"bottle", name:"Glass bottle with stopper", note:"Not fussy about brand. Link is eg. 2x pls", link:"https://www.kitchenwarehouse.com.au/product/bormioli-rocco-swing-bottle-with-white-top-500ml"},
-  {group:"Kitchen", id:"thermometer", name:"Thermometer", note:"For cooking meat, sugar temps, etc."},
-  {group:"Kitchen", id:"spicerack", name:"Spice rack", note:"For when we want things to get a little spicy"},
-  {group:"Kitchen", id:"cheeseknives", name:"Cheese knives", note:"For superior cutting of the cheese."},
-  {group:"Kitchen", id:"ovenmitts", name:"Oven mitts", note:"Go wild."},
-  {group:"Kitchen", id:"garlicpress", name:"Garlic press", note:"For when we're worried about vampires coming to visit", link:"https://www.kitchenwarehouse.com.au/product/oxo-good-grips-garlic-press-with-built-in-cleaner"},
-  {group:"Kitchen", id:"castiron", name:"Cast iron pan", note:"I'm particular. Will research"},
-  {group:"Kitchen", id:"stainless", name:"Stainless steel pan", note:"I'm particular. Will research"},
-  {group:"Kitchen", id:"papertowel", name:"Paper towel holder", note:"Wrangling the absorbable squares requires an extra tool"},
-  {group:"Kitchen", id:"sandwichpress", name:"Sandwich press", note:"For excellent toasties"},
-  {group:"Dining", id:"dinnerset", name:"Dinner set", note:"Cute or Yellow or both"},
-  {group:"Dining", id:"cutlery", name:"Cutlery", note:"Blunt the knives and bend the forks.."},
-  {group:"Dining", id:"tablecloth", name:"Table cloths", note:"Gotta cover up that ugly table"},
-  {group:"Dining", id:"diningtable", name:"Dining table", note:"For when we want to eat like civilised people. Or do craft."},
-  {group:"Living", id:"stickvac", name:"Stick vacuum", note:"A gift that really sucks"},
-  {group:"Living", id:"bookshelf", name:"Heirloom quality bookshelf", note:"\ud83d\udc40"},
-  {group:"Living", id:"wallclock", name:"Wall clock", note:"Something with a fun design!"},
-  {group:"Bedroom", id:"sheets2", name:"Queen sheet set 2", note:"For when the other sheets are in the wash."},
-  {group:"Bedroom", id:"sheets1", name:"Queen sheet set 1", note:"For putting on the bed"},
-  {group:"Bathroom", id:"duck", name:"Rubber duck", note:"For all our bathroom needs.", multi:true},
-  {group:"Outdoor", id:"tent", name:"Tent", note:"We go camp. Is good tent. Camp long time. No go home.", link:"https://www.snowys.com.au/instant-up-4p-gold-series-evo-tent"},
-  {group:"Outdoor", id:"chairs", name:"Outdoor chairs", note:"We have a whole outdoor undercover patio"},
-  {group:"Outdoor", id:"outdoortable", name:"Outdoor table", note:"To put the chairs around"},
-  {group:"Outdoor", id:"trinkets", name:"Outdoor trinkets", note:"Fun things for outside!"},
-  {group:"Outdoor", id:"bbq", name:"BBQ", note:"For tasty BBQing"},
-  {group:"Outdoor", id:"bbqequip", name:"BBQ equipment", note:"Tongs, BBQ spatula, etc."},
-  {group:"Outdoor", id:"gnome", name:"Garden gnome", note:"A friend for all the Bluey Gnomes", multi:true},
-  {group:"Books", id:"tolkien", name:"The History of Middle Earth", note:"Christopher Tolkien's masterpiece"},
-  {group:"Chip in fund", id:"dishwasher", name:"Dishwasher", note:"Our new place comes with a gaping hole where the dishwasher ought go", multi:true}
+  {
+    "group": "Kitchen",
+    "id": "airfryer",
+    "name": "Air Fryer",
+    "note": "Going to the darkside"
+  },
+  {
+    "group": "Kitchen",
+    "id": "castironpan",
+    "name": "Cast iron pan",
+    "note": "I'm particular. Will research"
+  },
+  {
+    "group": "Kitchen",
+    "id": "cheeseknives",
+    "name": "Cheese Knives",
+    "note": "For superior cutting of the cheese."
+  },
+  {
+    "group": "Kitchen",
+    "id": "cuttingboards",
+    "name": "Cutting boards",
+    "note": "Preferably wooden"
+  },
+  {
+    "group": "Kitchen",
+    "id": "garlicpress",
+    "name": "Garlic Press",
+    "note": "For when we're worried about vampires coming to visit",
+    "link": "https://www.kitchenwarehouse.com.au/product/oxo-good-grips-garlic-press-with-built-in-cleaner?gad_source=1&gad_campaignid=24020490420&gclid=EAIaIQobChMI_Izw-6OHlwMVbdIWBR1-GTdCEAQYASABEgLDQvD_BwE"
+  },
+  {
+    "group": "Kitchen",
+    "id": "glassbottlewithstopper",
+    "name": "Glass bottle with stopper",
+    "note": "Not fussy about brand. Link is eg. 2x pls",
+    "link": "https://www.kitchenwarehouse.com.au/product/bormioli-rocco-swing-bottle-with-white-top-500ml?gad_source=1&gad_campaignid=24029908942&gclid=EAIaIQobChMIt62f2KCHlwMVQP5MAh1IUwPQEAQYASABEgLefPD_BwE"
+  },
+  {
+    "group": "Kitchen",
+    "id": "knifeblockknives",
+    "name": "Knife Block & Knives",
+    "note": "We'd (George) would love a set that has at least a scalloped bread knife and a range of a few different knife sizes."
+  },
+  {
+    "group": "Kitchen",
+    "id": "microwave",
+    "name": "Microwave",
+    "note": "Tristan's microwave is seeing the light at the end of the tunnel. We'd love one so that we can heat up milk for our hot choccys."
+  },
+  {
+    "group": "Kitchen",
+    "id": "ovenmitts",
+    "name": "Oven Mitts",
+    "note": "Go wild."
+  },
+  {
+    "group": "Kitchen",
+    "id": "papertowelholder",
+    "name": "Paper Towel Holder",
+    "note": "Wrangling the absorbable squares requires an extra tool"
+  },
+  {
+    "group": "Kitchen",
+    "id": "sandwichpress",
+    "name": "Sandwich Press",
+    "note": "For excellent toasties"
+  },
+  {
+    "group": "Kitchen",
+    "id": "spicerack",
+    "name": "Spice rack",
+    "note": "For when we want things to get a little spicy"
+  },
+  {
+    "group": "Kitchen",
+    "id": "stainlesssteelpan",
+    "name": "Stainless steel pan",
+    "note": "I'm particular. Will research"
+  },
+  {
+    "group": "Kitchen",
+    "id": "standmixer",
+    "name": "Stand Mixer",
+    "note": "Very expensive. Definitely not essential."
+  },
+  {
+    "group": "Kitchen",
+    "id": "storagecontainers",
+    "name": "Storage containers",
+    "note": "For things like flour, sugar, pasta"
+  },
+  {
+    "group": "Kitchen",
+    "id": "thermometer",
+    "name": "Thermometer",
+    "note": "For cooking meat, sugar temps, etc."
+  },
+  {
+    "group": "Dining",
+    "id": "cutleryset",
+    "name": "Cutlery Set",
+    "note": "Blunt the knives and bend the forks.."
+  },
+  {
+    "group": "Dining",
+    "id": "diningtable",
+    "name": "Dining Table",
+    "note": "For when we want to eat like civilised people. Or do craft."
+  },
+  {
+    "group": "Dining",
+    "id": "dinnerset",
+    "name": "Dinner Set",
+    "note": "Cute or Yellow or both"
+  },
+  {
+    "group": "Dining",
+    "id": "tablecloths",
+    "name": "Table Cloths",
+    "note": "Gotta cover up that ugly table"
+  },
+  {
+    "group": "Living",
+    "id": "abookshelftosurpassikea",
+    "name": "A Bookshelf to surpass IKEA",
+    "note": "Looking for second hand options that will last. Let us know."
+  },
+  {
+    "group": "Living",
+    "id": "stickvacuum",
+    "name": "Stick Vacuum",
+    "note": "A gift that really sucks"
+  },
+  {
+    "group": "Living",
+    "id": "wallclock",
+    "name": "Wall Clock",
+    "note": "Something with a fun design!"
+  },
+  {
+    "group": "Bedroom",
+    "id": "queensheetset1",
+    "name": "Queen Sheet Set 1",
+    "note": "For putting on the bed"
+  },
+  {
+    "group": "Bedroom",
+    "id": "queensheetset2",
+    "name": "Queen Sheet Set 2",
+    "note": "For when the other sheets are in the wash."
+  },
+  {
+    "group": "Bathroom",
+    "id": "rubberduck",
+    "name": "Rubber Duck",
+    "note": "For all our bathroom needs.",
+    "multi": true
+  },
+  {
+    "group": "Outdoor",
+    "id": "bbq",
+    "name": "BBQ",
+    "note": "For tasty BBQing"
+  },
+  {
+    "group": "Outdoor",
+    "id": "bbqequipment",
+    "name": "BBQ Equipment",
+    "note": "Tongs, BBQ Spatula, etc."
+  },
+  {
+    "group": "Outdoor",
+    "id": "gardengnome",
+    "name": "Garden Gnome",
+    "note": "A friend for all the Bluey Gnomes",
+    "multi": true
+  },
+  {
+    "group": "Outdoor",
+    "id": "outdoorchairs",
+    "name": "Outdoor Chairs",
+    "note": "We have a whole outdoor undercover patio"
+  },
+  {
+    "group": "Outdoor",
+    "id": "outdoortable",
+    "name": "Outdoor Table",
+    "note": "To put the chairs around"
+  },
+  {
+    "group": "Outdoor",
+    "id": "outdoortrinkets",
+    "name": "Outdoor Trinkets",
+    "note": "Fun things for outside!"
+  },
+  {
+    "group": "Adventure",
+    "id": "tent",
+    "name": "Tent",
+    "note": "We go camp. Is good tent. Camp long time. No go home.",
+    "link": "https://www.snowys.com.au/instant-up-4p-gold-series-evo-tent"
+  },
+  {
+    "group": "Adventure",
+    "id": "campinggasstove",
+    "name": "Camping Gas Stove",
+    "note": "For when we can't campfire"
+  },
+  {
+    "group": "Adventure",
+    "id": "campfryingpan",
+    "name": "Camp Frying pan",
+    "note": "For cooking sausages whilst camping"
+  },
+  {
+    "group": "Adventure",
+    "id": "billies",
+    "name": "Billies",
+    "note": "Boil water over the fire"
+  },
+  {
+    "group": "Adventure",
+    "id": "tripod",
+    "name": "Tripod",
+    "note": "Gotta hang that billy over the fire"
+  },
+  {
+    "group": "Adventure",
+    "id": "adoublefoamcampmattress",
+    "name": "A double foam camp mattress",
+    "note": "Tristan's swag won't fit both of us."
+  },
+  {
+    "group": "Chip in Fund",
+    "id": "dishwasher",
+    "name": "Dishwasher",
+    "note": "Our new place comes with a gaping hole where the dishwasher aught go",
+    "multi": true
+  }
 ]
