@@ -12,11 +12,12 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 "Instrument Sans",system-ui,sans-serif}
 main{max-width:640px;margin:0 auto;padding:4rem 1.5rem 5rem}
+.head{max-width:60ch;margin:0 auto 3rem}
 @media (min-width:900px){main{max-width:1600px}}
 #list{display:flex;align-items:flex-start;gap:1.5rem}
 .col{display:flex;flex-direction:column;gap:1.5rem;flex:1;min-width:0}
 h1{font:600 clamp(2.4rem,8vw,3.6rem)/1.05 Fraunces,Georgia,serif;letter-spacing:-.02em;margin:0 0 1.25rem}
-.intro{max-width:60ch;margin:0 0 3rem}
+.intro{margin:0}
 .intro p{margin:0 0 1rem}
 .room{font-size:1rem;margin:0;padding:1.25em 1.5em .4em;border:2px solid #000;border-radius:18px;background:rgba(255,255,255,.4);transition:font-size .3s}
 .room.done{font-size:.75rem;margin:1rem 0}
@@ -45,15 +46,17 @@ footer{margin-top:2.5rem;color:var(--muted);font-size:.95rem}
 </head>
 <body>
 <main>
+<header class="head">
 <h1>G&amp;T</h1>
 <div class="intro">
 <p>So you want to get us something. Thank you, we really do appreciate it..</p>
-  <p>But you don't know what to get, and so here you are.</p>
-  <br>
-  <p>If you need more than info than that, read on..</p>
-  <p>Tristan already owns much of the utilitarian bachelor pad survival gear, so we're looking to things with a bit more character.</p>
-  <p>We're fond of yellow and handcrafted ceramics, but if that's too vague, below we have a more specific list of the various bits that we would  particularly appreciate.</p>
+<p>But you don't know what to get, and so here you are.</p>
+<br>
+<p>If you need more than info than that, read on..</p>
+<p>Tristan already owns much of the utilitarian bachelor pad survival gear, so we're looking to things with a bit more character.</p>
+<p>We're fond of yellow and handcrafted ceramics, but if that's too vague, below we have a more specific list of the various bits that we would particularly appreciate.</p>
 </div>
+</header>
 <div id="list"></div>
 <p class="msg" id="status" role="status"></p>
 <footer>Thank you. We are so glad you are coming. <br> If you've accidentally selected something, let us know and we can undo your selection.</footer>
