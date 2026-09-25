@@ -8,8 +8,9 @@
   {
     "group": "Kitchen",
     "id": "castironpan",
-    "name": "Cast iron pan",
-    "note": "George is very picky, more details TBD. ~~THIS NEEDS TO BE FILLED IN~~"
+    "name": "Cast Iron Pan",
+    "note": "For ultimate self defense - See Disney's Tangled for additional reference",
+    "link": "https://www.kitchenwarehouse.com.au/product/lodge-logic-cast-iron-skillet-26cm"
   },
   {
     "group": "Kitchen",
@@ -28,14 +29,14 @@
     "id": "garlicpress",
     "name": "Garlic Press",
     "note": "For when we're worried about vampires coming to visit",
-    "link": "https://www.kitchenwarehouse.com.au/product/oxo-good-grips-garlic-press-with-built-in-cleaner?gad_source=1&gad_campaignid=24020490420&gclid=EAIaIQobChMI_Izw-6OHlwMVbdIWBR1-GTdCEAQYASABEgLDQvD_BwE"
+    "link": "https://www.kitchenwarehouse.com.au/product/oxo-good-grips-garlic-press-with-built-in-cleaner"
   },
   {
     "group": "Kitchen",
     "id": "glassbottlewithstopper",
     "name": "Glass bottle with stopper",
     "note": "Not fussy about brand. Link is eg. 2x pls",
-    "link": "https://www.kitchenwarehouse.com.au/product/bormioli-rocco-swing-bottle-with-white-top-500ml?gad_source=1&gad_campaignid=24029908942&gclid=EAIaIQobChMIt62f2KCHlwMVQP5MAh1IUwPQEAQYASABEgLefPD_BwE"
+    "link": "https://www.kitchenwarehouse.com.au/product/bormioli-rocco-swing-bottle-with-white-top-500ml"
   },
   {
     "group": "Kitchen",
@@ -98,6 +99,13 @@
     "note": "For cooking meat, sugar temps, etc."
   },
   {
+    "group": "Kitchen",
+    "id": "stainlesssteelmixingbowls",
+    "name": "Stainless Steel Mixing Bowls",
+    "note": "Bowling",
+    "link": "https://www.kitchenwarehouse.com.au/product/kitchen-pro-mixwell-stainless-steel-mixing-bowl-set-5pc?gad_source=1&gad_campaignid=24020494257&gclid=EAIaIQobChMI7v3Ekp2JlwMVNZe5BR3q7xBREAQYAiABEgIC4fD_BwE"
+  },
+  {
     "group": "Dining",
     "id": "cutleryset",
     "name": "Cutlery Set",
@@ -129,12 +137,6 @@
   },
   {
     "group": "Living",
-    "id": "stickvacuum",
-    "name": "Stick Vacuum",
-    "note": "A gift that really sucks"
-  },
-  {
-    "group": "Living",
     "id": "wallclock",
     "name": "Wall Clock",
     "note": "Something with a fun design!"
@@ -159,10 +161,34 @@
     "multi": true
   },
   {
-    "group": "Outdoor",
-    "id": "bbqequipment",
-    "name": "BBQ Equipment",
-    "note": "Tongs, BBQ Spatula, etc."
+    "group": "Cleaning",
+    "id": "stickvacuum",
+    "name": "Stick Vacuum",
+    "note": "A gift that really sucks"
+  },
+  {
+    "group": "Cleaning",
+    "id": "scrubdaddy",
+    "name": "Scrub Daddy",
+    "link": "https://scrubdaddy.net.au/product/scrub-daddy-original/"
+  },
+  {
+    "group": "Cleaning",
+    "id": "scrubdaddycaddy",
+    "name": "Scrub Daddy Caddy",
+    "link": "https://scrubdaddy.net.au/product/daddy-caddy/"
+  },
+  {
+    "group": "Cleaning",
+    "id": "scrubdaddydampduster",
+    "name": "Scrub Daddy Damp Duster",
+    "link": "https://scrubdaddy.net.au/product/damp-duster/"
+  },
+  {
+    "group": "Cleaning",
+    "id": "thepinkstuff",
+    "name": "The Pink Stuff",
+    "link": "https://www.coles.com.au/product/the-pink-stuff-miracle-cleaning-paste-850g-4998540"
   },
   {
     "group": "Outdoor",
