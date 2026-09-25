@@ -69,45 +69,10 @@ const ENTRY_NAME    = "entry.1905366713";
 const ENTRY_NOTES   = "entry.1819125415";
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn4-SZ7JhozDiIcdt-UnzqwP_S7ISGYS91qZ7rl0FrgQplcwOrh4aKyfq_FWwvBbR7wtTLCxVyIevY/pub?gid=2135754539&single=true&output=csv";
 
-// 2. Edit your items here. Each id must be unique and should not change once guests start claiming.
-const ITEMS = [
-  // group, id, name, note (the blurb), link (optional), multi (true = many people can claim it)
-  {group:"Kitchen", id:"microwave", name:"Microwave", note:"Tristan's microwave is seeing the light at the end of the tunnel. We'd love one so that we can heat up milk for our hot choccys."},
-  {group:"Kitchen", id:"airfryer", name:"Air fryer", note:"Going to the darkside"},
-  {group:"Kitchen", id:"knives", name:"Knife block and knives", note:"We'd (George) would love a set that has at least a scalloped bread knife and a range of a few different knife sizes."},
-  {group:"Kitchen", id:"boards", name:"Cutting boards", note:"Preferably wooden"},
-  {group:"Kitchen", id:"standmixer", name:"Stand mixer", note:"Very expensive. Definitely not essential."},
-  {group:"Kitchen", id:"storage", name:"Storage containers", note:"For things like flour, sugar, pasta"},
-  {group:"Kitchen", id:"bottle", name:"Glass bottle with stopper", note:"Not fussy about brand. Link is eg. 2x pls", link:"https://www.kitchenwarehouse.com.au/product/bormioli-rocco-swing-bottle-with-white-top-500ml"},
-  {group:"Kitchen", id:"thermometer", name:"Thermometer", note:"For cooking meat, sugar temps, etc."},
-  {group:"Kitchen", id:"spicerack", name:"Spice rack", note:"For when we want things to get a little spicy"},
-  {group:"Kitchen", id:"cheeseknives", name:"Cheese knives", note:"For superior cutting of the cheese."},
-  {group:"Kitchen", id:"ovenmitts", name:"Oven mitts", note:"Go wild."},
-  {group:"Kitchen", id:"garlicpress", name:"Garlic press", note:"For when we're worried about vampires coming to visit", link:"https://www.kitchenwarehouse.com.au/product/oxo-good-grips-garlic-press-with-built-in-cleaner"},
-  {group:"Kitchen", id:"castiron", name:"Cast iron pan", note:"I'm particular. Will research"},
-  {group:"Kitchen", id:"stainless", name:"Stainless steel pan", note:"I'm particular. Will research"},
-  {group:"Kitchen", id:"papertowel", name:"Paper towel holder", note:"Wrangling the absorbable squares requires an extra tool"},
-  {group:"Kitchen", id:"sandwichpress", name:"Sandwich press", note:"For excellent toasties"},
-  {group:"Dining", id:"dinnerset", name:"Dinner set", note:"Cute or Yellow or both"},
-  {group:"Dining", id:"cutlery", name:"Cutlery", note:"Blunt the knives and bend the forks.."},
-  {group:"Dining", id:"tablecloth", name:"Table cloths", note:"Gotta cover up that ugly table"},
-  {group:"Dining", id:"diningtable", name:"Dining table", note:"For when we want to eat like civilised people. Or do craft."},
-  {group:"Living", id:"stickvac", name:"Stick vacuum", note:"A gift that really sucks"},
-  {group:"Living", id:"bookshelf", name:"Heirloom quality bookshelf", note:"\ud83d\udc40"},
-  {group:"Living", id:"wallclock", name:"Wall clock", note:"Something with a fun design!"},
-  {group:"Bedroom", id:"sheets2", name:"Queen sheet set 2", note:"For when the other sheets are in the wash."},
-  {group:"Bedroom", id:"sheets1", name:"Queen sheet set 1", note:"For putting on the bed"},
-  {group:"Bathroom", id:"duck", name:"Rubber duck", note:"For all our bathroom needs.", multi:true},
-  {group:"Outdoor", id:"tent", name:"Tent", note:"We go camp. Is good tent. Camp long time. No go home.", link:"https://www.snowys.com.au/instant-up-4p-gold-series-evo-tent"},
-  {group:"Outdoor", id:"chairs", name:"Outdoor chairs", note:"We have a whole outdoor undercover patio"},
-  {group:"Outdoor", id:"outdoortable", name:"Outdoor table", note:"To put the chairs around"},
-  {group:"Outdoor", id:"trinkets", name:"Outdoor trinkets", note:"Fun things for outside!"},
-  {group:"Outdoor", id:"bbq", name:"BBQ", note:"For tasty BBQing"},
-  {group:"Outdoor", id:"bbqequip", name:"BBQ equipment", note:"Tongs, BBQ spatula, etc."},
-  {group:"Outdoor", id:"gnome", name:"Garden gnome", note:"A friend for all the Bluey Gnomes", multi:true},
-  {group:"Books", id:"tolkien", name:"The History of Middle Earth", note:"Christopher Tolkien's masterpiece"},
-  {group:"Chip in fund", id:"dishwasher", name:"Dishwasher", note:"Our new place comes with a gaping hole where the dishwasher ought go", multi:true}
-];
+// 2. Items live in items.json, next to this file, so the content list stays
+// separate from the page code. Edit that file (or regenerate it from the
+// Sheet with tsv_to_items.py), not this one, to change what's on the registry.
+let ITEMS = [];
 
 const list = document.getElementById("list"), statusEl = document.getElementById("status");
 let claimed = new Set();
@@ -236,6 +201,12 @@ function parseCSV(t){
 
 async function load(){
   claimed = new Set(mine());
+  try {
+    ITEMS = await (await fetch("items.json")).json();
+  } catch(e){
+    say("Could not load the item list. Please refresh.");
+    return;
+  }
   render();
   if (!SHEET_CSV_URL) return;
   try {
