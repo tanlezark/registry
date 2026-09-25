@@ -160,12 +160,6 @@
   },
   {
     "group": "Outdoor",
-    "id": "bbqplates",
-    "name": "BBQ plates",
-    "note": "Our new house comes with a brick woodfire BBQ.. that's a little out of repair."
-  },
-  {
-    "group": "Outdoor",
     "id": "bbqequipment",
     "name": "BBQ Equipment",
     "note": "Tongs, BBQ Spatula, etc."
@@ -192,7 +186,8 @@
     "group": "Outdoor",
     "id": "outdoortrinkets",
     "name": "Outdoor Trinkets",
-    "note": "Fun things for outside!"
+    "note": "Fun things for outside!",
+    "multi": true
   },
   {
     "group": "Adventure",
