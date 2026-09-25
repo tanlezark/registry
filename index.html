@@ -13,6 +13,256 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 "Instrument Sans",system-ui,sans-serif}
 main{max-width:640px;margin:0 auto;padding:4rem 1.5rem 5rem}
 .head{max-width:60ch;margin:0 auto 3rem}
+@media (min-width:900px){main{max-width:min(2200px, calc(100vw - 514px))}}
+#list{display:flex;align-items:flex-start;gap:1.5rem}
+.col{display:flex;flex-direction:column;gap:1.5rem;flex:1;min-width:0}
+h1{font:600 clamp(2.4rem,8vw,3.6rem)/1.05 Fraunces,Georgia,serif;letter-spacing:-.02em;margin:0 0 1.25rem}
+.intro{margin:0}
+.intro p{margin:0 0 1rem}
+.room{font-size:1rem;margin:0;padding:1.25em 1.5em .4em;border:2px solid #000;border-radius:18px;background:rgba(255,255,255,.4);transition:font-size .3s}
+.room.done{font-size:.75rem;margin:1rem 0}
+.room-head{display:flex;justify-content:space-between;align-items:baseline;gap:1em;margin-bottom:.6em}
+h2{font:600 2em/1.1 Fraunces,Georgia,serif;letter-spacing:-.01em;margin:0}
+.count{color:var(--muted);font-size:.85em;white-space:nowrap}
+ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+li{border-bottom:1px solid var(--line);padding:1.1em 0}
+li:last-child{border-bottom:0}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.name{font:600 1.25em/1.3 Fraunces,Georgia,serif}
+.note{color:var(--muted);font-size:.95em;margin:.15em 0 0}
+button{font:500 .95rem "Instrument Sans",system-ui,sans-serif;border-radius:999px;padding:.5rem 1.1rem;cursor:pointer;white-space:nowrap;border:1px solid var(--accent);background:transparent;color:var(--accent)}
+button:hover{background:var(--accent);color:var(--accent-ink)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button.solid{background:var(--accent);color:var(--accent-ink)}
+.taken .name,.taken .note{text-decoration:line-through;color:var(--muted);font-weight:400}
+.link{display:inline-block;margin-top:.2em;font-size:.9em;color:var(--accent)}
+.tag{color:var(--muted);font-size:.95em;white-space:nowrap}
+form{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.9rem}
+input,textarea{flex:1 1 200px;font:inherit;font-size:.95rem;padding:.5rem .8rem;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+textarea{flex-basis:100%;resize:vertical;min-height:4.5rem}
+.msg{color:var(--muted);font-size:.9rem;margin-top:.5rem}
+footer{margin-top:2.5rem;color:var(--muted);font-size:.95rem}
+</style>
+</head>
+<body>
+<main>
+<header class="head">
+<h1>G&amp;T</h1>
+<div class="intro">
+<p>So you want to get us something. Thank you, we really do appreciate it..</p>
+<p>But you don't know what to get, and so here you are.</p>
+<br>
+<p>If you need more than info than that, read on..</p>
+<p>Tristan already owns much of the utilitarian bachelor pad survival gear, so we're looking to things with a bit more character.</p>
+<p>We're fond of yellow and handcrafted ceramics, but if that's too vague, below we have a more specific list of the various bits that we would particularly appreciate.</p>
+</div>
+</header>
+<div id="list"></div>
+<p class="msg" id="status" role="status"></p>
+<footer>Thank you. We are so glad you are coming. <br> If you've accidentally selected something, let us know and we can undo your selection.</footer>
+</main>
+<script>
+// 1. Google Form and Sheet settings. Leave FORM_URL empty to preview locally.
+const FORM_URL      = "https://docs.google.com/forms/d/e/1FAIpQLSeWVL5mlzHtPsGpulaXCtoU-vtHiCry53Kaix3duR2kXu0umg/formResponse";
+const ENTRY_ITEM    = "entry.468522525";
+const ENTRY_NAME    = "entry.1905366713";
+const ENTRY_NOTES   = "entry.1819125415";
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn4-SZ7JhozDiIcdt-UnzqwP_S7ISGYS91qZ7rl0FrgQplcwOrh4aKyfq_FWwvBbR7wtTLCxVyIevY/pub?gid=2135754539&single=true&output=csv";
+
+// 2. Edit your items here. Each id must be unique and should not change once guests start claiming.
+const ITEMS = [
+  // group, id, name, note (the blurb), link (optional), multi (true = many people can claim it)
+  {group:"Kitchen", id:"microwave", name:"Microwave", note:"Tristan's microwave is seeing the light at the end of the tunnel. We'd love one so that we can heat up milk for our hot choccys."},
+  {group:"Kitchen", id:"airfryer", name:"Air fryer", note:"Going to the darkside"},
+  {group:"Kitchen", id:"knives", name:"Knife block and knives", note:"We'd (George) would love a set that has at least a scalloped bread knife and a range of a few different knife sizes."},
+  {group:"Kitchen", id:"boards", name:"Cutting boards", note:"Preferably wooden"},
+  {group:"Kitchen", id:"standmixer", name:"Stand mixer", note:"Very expensive. Definitely not essential."},
+  {group:"Kitchen", id:"storage", name:"Storage containers", note:"For things like flour, sugar, pasta"},
+  {group:"Kitchen", id:"bottle", name:"Glass bottle with stopper", note:"Not fussy about brand. Link is eg. 2x pls", link:"https://www.kitchenwarehouse.com.au/product/bormioli-rocco-swing-bottle-with-white-top-500ml"},
+  {group:"Kitchen", id:"thermometer", name:"Thermometer", note:"For cooking meat, sugar temps, etc."},
+  {group:"Kitchen", id:"spicerack", name:"Spice rack", note:"For when we want things to get a little spicy"},
+  {group:"Kitchen", id:"cheeseknives", name:"Cheese knives", note:"For superior cutting of the cheese."},
+  {group:"Kitchen", id:"ovenmitts", name:"Oven mitts", note:"Go wild."},
+  {group:"Kitchen", id:"garlicpress", name:"Garlic press", note:"For when we're worried about vampires coming to visit", link:"https://www.kitchenwarehouse.com.au/product/oxo-good-grips-garlic-press-with-built-in-cleaner"},
+  {group:"Kitchen", id:"castiron", name:"Cast iron pan", note:"I'm particular. Will research"},
+  {group:"Kitchen", id:"stainless", name:"Stainless steel pan", note:"I'm particular. Will research"},
+  {group:"Kitchen", id:"papertowel", name:"Paper towel holder", note:"Wrangling the absorbable squares requires an extra tool"},
+  {group:"Kitchen", id:"sandwichpress", name:"Sandwich press", note:"For excellent toasties"},
+  {group:"Dining", id:"dinnerset", name:"Dinner set", note:"Cute or Yellow or both"},
+  {group:"Dining", id:"cutlery", name:"Cutlery", note:"Blunt the knives and bend the forks.."},
+  {group:"Dining", id:"tablecloth", name:"Table cloths", note:"Gotta cover up that ugly table"},
+  {group:"Dining", id:"diningtable", name:"Dining table", note:"For when we want to eat like civilised people. Or do craft."},
+  {group:"Living", id:"stickvac", name:"Stick vacuum", note:"A gift that really sucks"},
+  {group:"Living", id:"bookshelf", name:"Heirloom quality bookshelf", note:"\ud83d\udc40"},
+  {group:"Living", id:"wallclock", name:"Wall clock", note:"Something with a fun design!"},
+  {group:"Bedroom", id:"sheets2", name:"Queen sheet set 2", note:"For when the other sheets are in the wash."},
+  {group:"Bedroom", id:"sheets1", name:"Queen sheet set 1", note:"For putting on the bed"},
+  {group:"Bathroom", id:"duck", name:"Rubber duck", note:"For all our bathroom needs.", multi:true},
+  {group:"Outdoor", id:"tent", name:"Tent", note:"We go camp. Is good tent. Camp long time. No go home.", link:"https://www.snowys.com.au/instant-up-4p-gold-series-evo-tent"},
+  {group:"Outdoor", id:"chairs", name:"Outdoor chairs", note:"We have a whole outdoor undercover patio"},
+  {group:"Outdoor", id:"outdoortable", name:"Outdoor table", note:"To put the chairs around"},
+  {group:"Outdoor", id:"trinkets", name:"Outdoor trinkets", note:"Fun things for outside!"},
+  {group:"Outdoor", id:"bbq", name:"BBQ", note:"For tasty BBQing"},
+  {group:"Outdoor", id:"bbqequip", name:"BBQ equipment", note:"Tongs, BBQ spatula, etc."},
+  {group:"Outdoor", id:"gnome", name:"Garden gnome", note:"A friend for all the Bluey Gnomes", multi:true},
+  {group:"Books", id:"tolkien", name:"The History of Middle Earth", note:"Christopher Tolkien's masterpiece"},
+  {group:"Chip in fund", id:"dishwasher", name:"Dishwasher", note:"Our new place comes with a gaping hole where the dishwasher ought go", multi:true}
+];
+
+const list = document.getElementById("list"), statusEl = document.getElementById("status");
+let claimed = new Set();
+
+function say(t){ statusEl.textContent = t; }
+
+let roomEls = [];
+
+function render(){
+  roomEls = [];
+  list.innerHTML = "";
+  const groups = [];
+  for (const it of ITEMS){
+    let g = groups.find(x => x.name === it.group);
+    if (!g){ g = {name: it.group, items: []}; groups.push(g); }
+    g.items.push(it);
+  }
+  for (const g of groups){
+    const isTaken = it => !it.multi && claimed.has(it.id);
+    const n = g.items.filter(isTaken).length;
+    const sec = document.createElement("section");
+    sec.className = "room" + (n === g.items.length ? " done" : "");
+    const head = document.createElement("div"); head.className = "room-head";
+    const h = document.createElement("h2"); h.textContent = g.name;
+    const c = document.createElement("span"); c.className = "count";
+    c.textContent = n === g.items.length ? "All taken" : n + " of " + g.items.length + " taken";
+    head.append(h, c); sec.append(head);
+    const ul = document.createElement("ul"); sec.append(ul);
+    for (const it of g.items){
+      const li = document.createElement("li");
+      const taken = isTaken(it);
+      if (taken) li.className = "taken";
+      li.innerHTML = '<div class="row"><div class="info"><div class="name"></div><p class="note"></p></div></div>';
+      li.querySelector(".name").textContent = it.name;
+      const note = li.querySelector(".note");
+      if (it.note) note.textContent = it.note; else note.remove();
+      if (it.link){
+        const a = document.createElement("a"); a.className = "link"; a.href = it.link;
+        a.target = "_blank"; a.rel = "noopener"; a.textContent = "The one we have in mind";
+        li.querySelector(".info").append(a);
+      }
+      const row = li.querySelector(".row");
+      if (taken){
+        const t = document.createElement("span"); t.className = "tag"; t.textContent = "Taken"; row.append(t);
+      } else {
+        const b = document.createElement("button"); b.textContent = it.multi ? "I'll chip in" : "I'll get this";
+        b.onclick = () => openForm(li, it, b); row.append(b);
+      }
+      ul.append(li);
+    }
+    roomEls.push(sec);
+  }
+  layout();
+}
+
+const MIN_COL = 490, GAP = 24;
+function layout(){
+  const w = list.getBoundingClientRect().width || window.innerWidth;
+  const count = Math.max(1, Math.floor((w + GAP) / (MIN_COL + GAP)));
+  list.innerHTML = "";
+  const cols = [];
+  for (let i = 0; i < count; i++){ const c = document.createElement("div"); c.className = "col"; list.append(c); cols.push({el:c, h:0}); }
+  for (const room of roomEls){
+    const shortest = cols.reduce((a,b) => b.h < a.h ? b : a, cols[0]);
+    shortest.el.append(room);
+    shortest.h += room.offsetHeight;
+  }
+}
+let resizeTimer;
+window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(layout, 150); });
+
+function openForm(li, it, btn){
+  btn.hidden = true;
+  const f = document.createElement("form");
+  f.innerHTML = '<input aria-label="Your name" placeholder="Your name" autocomplete="name"><textarea aria-label="A note for us (optional)" placeholder="A note for us (optional)"></textarea><button class="solid" type="submit">Confirm</button><button type="button">Cancel</button>';
+  const [input, notes, ok, cancel] = f.elements;
+  cancel.onclick = () => { f.remove(); btn.hidden = false; };
+  f.onsubmit = async e => {
+    e.preventDefault(); ok.disabled = true; ok.textContent = "Saving";
+    const result = await claim(it, input.value.trim(), notes.value.trim());
+    if (result === "ok") say(it.multi ? "Thank you. We have noted it." : "Thank you. " + it.name + " is marked as yours.");
+    else if (result === "taken") say("Someone just claimed " + it.name + ". Please pick another.");
+    else { say("That did not save. Please try again in a moment."); f.remove(); btn.hidden = false; return; }
+    render();
+  };
+  li.append(f); input.focus();
+}
+
+// A guest's own claims are remembered on their device for 30 minutes, to cover the delay
+// before the published Sheet catches up. After that, the Sheet is the only source of truth.
+const KEY = "registry-mine-v2", KEEP_MS = 30 * 60 * 1000;
+function mine(){
+  try { const o = JSON.parse(localStorage.getItem(KEY) || "{}"), now = Date.now();
+        return Object.keys(o).filter(k => now - o[k] < KEEP_MS); } catch(e){ return []; }
+}
+function remember(id){
+  try { const o = JSON.parse(localStorage.getItem(KEY) || "{}"); o[id] = Date.now();
+        localStorage.setItem(KEY, JSON.stringify(o)); } catch(e){}
+}
+
+async function claim(it, name, notes){
+  if (!it.multi) claimed.add(it.id);
+  if (!FORM_URL) return "ok";
+  try {
+    const body = new URLSearchParams();
+    body.set(ENTRY_ITEM, it.id); body.set(ENTRY_NAME, name); body.set(ENTRY_NOTES, notes);
+    await fetch(FORM_URL, {method:"POST", mode:"no-cors", body});
+    if (!it.multi) remember(it.id);
+    return "ok";
+  } catch(e){ claimed.delete(it.id); return "error"; }
+}
+
+function parseCSV(t){
+  const rows = []; let r = [], c = "", q = false;
+  for (let i = 0; i < t.length; i++){
+    const ch = t[i];
+    if (q){ if (ch === '"'){ if (t[i+1] === '"'){ c += '"'; i++; } else q = false; } else c += ch; }
+    else if (ch === '"') q = true;
+    else if (ch === ","){ r.push(c); c = ""; }
+    else if (ch === "\n"){ r.push(c); rows.push(r); r = []; c = ""; }
+    else if (ch !== "\r") c += ch;
+  }
+  if (c || r.length){ r.push(c); rows.push(r); }
+  return rows;
+}
+
+async function load(){
+  claimed = new Set(mine());
+  render();
+  if (!SHEET_CSV_URL) return;
+  try {
+    const url = SHEET_CSV_URL + (SHEET_CSV_URL.includes("?") ? "&" : "?") + "t=" + Date.now();
+    const rows = parseCSV(await (await fetch(url)).text()).slice(1);
+    claimed = new Set([...mine(), ...rows.map(r => (r[1] || "").trim()).filter(Boolean)]);
+    render();
+  } catch(e){ say("Could not check what has been taken. Please refresh."); }
+}
+load();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G&amp;T registry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:rgb(250,220,80);--ink:#000;--muted:#3a3300;--line:rgba(0,0,0,.3);--accent:#000;--accent-ink:rgb(250,220,80)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 "Instrument Sans",system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:4rem 1.5rem 5rem}
+.head{max-width:60ch;margin:0 auto 3rem}
 @media (min-width:900px){main{max-width:1600px}}
 #list{display:flex;align-items:flex-start;gap:1.5rem}
 .col{display:flex;flex-direction:column;gap:1.5rem;flex:1;min-width:0}
