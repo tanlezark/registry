@@ -118,7 +118,8 @@ function render(){
       if (taken){
         const t = document.createElement("span"); t.className = "tag"; t.textContent = "Taken"; row.append(t);
       } else {
-        const b = document.createElement("button"); b.textContent = it.multi ? "I'll chip in" : "I'll get this";
+        const isFund = it.group === "Chip in fund";
+        const b = document.createElement("button"); b.textContent = isFund ? "I'll chip in" : (it.multi ? "I'll get one" : "I'll get this");
         b.onclick = () => openForm(li, it, b); row.append(b);
       }
       ul.append(li);
@@ -153,7 +154,7 @@ function openForm(li, it, btn){
   f.onsubmit = async e => {
     e.preventDefault(); ok.disabled = true; ok.textContent = "Saving";
     const result = await claim(it, input.value.trim(), notes.value.trim());
-    if (result === "ok") say(it.multi ? "Thank you. We have noted it." : "Thank you. " + it.name + " is marked as yours.");
+    if (result === "ok") say(it.group === "Chip in fund" ? "Thank you. We have noted it." : (it.multi ? "Thank you. We've noted you're getting a " + it.name.toLowerCase() + "." : "Thank you. " + it.name + " is marked as yours."));
     else if (result === "taken") say("Someone just claimed " + it.name + ". Please pick another.");
     else { say("That did not save. Please try again in a moment."); f.remove(); btn.hidden = false; return; }
     render();
