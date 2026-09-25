@@ -13,13 +13,13 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 "Instrument Sans",system-ui,sans-serif}
 main{max-width:640px;margin:0 auto;padding:4rem 1.5rem 5rem}
 @media (min-width:900px){main{max-width:1360px}}
-#list{display:grid;grid-template-columns:1fr;gap:0 1.5rem;align-items:start}
-@media (min-width:900px){#list{grid-template-columns:repeat(2,1fr)}}
-@media (min-width:1300px){#list{grid-template-columns:repeat(3,1fr)}}
+#list{column-gap:1.5rem}
+@media (min-width:900px){#list{column-count:2}}
+@media (min-width:1300px){#list{column-count:3}}
 h1{font:600 clamp(2.4rem,8vw,3.6rem)/1.05 Fraunces,Georgia,serif;letter-spacing:-.02em;margin:0 0 1.25rem}
 .intro{max-width:60ch;margin:0 0 3rem}
 .intro p{margin:0 0 1rem}
-.room{font-size:1rem;margin:0 0 1.5rem;padding:1.25em 1.5em .4em;border:2px solid #000;border-radius:18px;background:rgba(255,255,255,.4);transition:font-size .3s,margin .3s}
+.room{font-size:1rem;margin:0 0 1.5rem;padding:1.25em 1.5em .4em;border:2px solid #000;border-radius:18px;background:rgba(255,255,255,.4);transition:font-size .3s,margin .3s;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;vertical-align:top}
 .room.done{font-size:.75rem;margin:1rem 0}
 .room-head{display:flex;justify-content:space-between;align-items:baseline;gap:1em;margin-bottom:.6em}
 h2{font:600 2em/1.1 Fraunces,Georgia,serif;letter-spacing:-.01em;margin:0}
