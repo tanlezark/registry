@@ -1,5 +1,4 @@
 [
-  // group, id, name, note (the blurb), link (optional), multi (true = many people can claim it)
   {group:"Kitchen", id:"microwave", name:"Microwave", note:"Tristan's microwave is seeing the light at the end of the tunnel. We'd love one so that we can heat up milk for our hot choccys."},
   {group:"Kitchen", id:"airfryer", name:"Air fryer", note:"Going to the darkside"},
   {group:"Kitchen", id:"knives", name:"Knife block and knives", note:"We'd (George) would love a set that has at least a scalloped bread knife and a range of a few different knife sizes."},
