@@ -49,16 +49,12 @@ footer{margin-top:2.5rem;color:var(--muted);font-size:.95rem}
 <header class="head">
 <h1>G&amp;T</h1>
 <div class="intro">
-<h2>Welcome to the Registry Page!</h2>
-<p>We appreciate it.</p>
+<p>So you want to get us something. Thank you, we really do appreciate it..</p>
+<p>But you don't know what to get, and so here you are.</p>
 <br>
-<p>Tristan has a stack of utilitarian bachelor pad survival gear, which is great for a single man living alone - less great for the two of us starting a life together.</p>
-<br>
-<p>We’re happy with anything that has a bit of character. We both like the colour yellow, and anything duck themed is a win (particularly for George). In the end, we’re happy for your presence on the day.</p>
-<br>
-<p>Below are some ideas of things which would be appreciated, some of which have links to specific items we’ve thought of.</p>
-<p>Just mark it off with the button next to it.</p>
-<p>If you've accidentally selected something, let us know and we can undo your selection.</p>
+<p>If you need more than info than that, read on..</p>
+<p>Tristan already owns much of the utilitarian bachelor pad survival gear, so we're looking to things with a bit more character.</p>
+<p>We're fond of yellow and handcrafted ceramics, but if that's too vague, below we have a more specific list of the various bits that we would particularly appreciate.</p>
 </div>
 </header>
 <div id="list"></div>
@@ -72,11 +68,52 @@ const ENTRY_ITEM    = "entry.468522525";
 const ENTRY_NAME    = "entry.1905366713";
 const ENTRY_NOTES   = "entry.1819125415";
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn4-SZ7JhozDiIcdt-UnzqwP_S7ISGYS91qZ7rl0FrgQplcwOrh4aKyfq_FWwvBbR7wtTLCxVyIevY/pub?gid=2135754539&single=true&output=csv";
+const ITEMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrc23Xb_w5tHJiaE-GLbMQ9rPaGd_1lQTeG8-PYydDymOqVYIki_qRZ0kWVHIoryPVxDJ2bQhTtHgT/pub?gid=619533425&single=true&output=csv";
 
-// 2. Items live in items.json, next to this file, so the content list stays
-// separate from the page code. Edit that file (or regenerate it from the
-// Sheet with tsv_to_items.py), not this one, to change what's on the registry.
+// 2. Items load straight from the ITEMS_CSV_URL sheet above: no build step, no
+// file to regenerate. Columns expected: Room, Item, Blurb, Link, Multiple, SortOrder.
 let ITEMS = [];
+
+function slug(name){
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 40) || "item";
+}
+
+function parseItemsCSV(text){
+  const rows = parseCSV(text);
+  const header = rows[0].map(h => h.trim().toLowerCase());
+  const col = name => header.indexOf(name);
+  const iRoom = col("room"), iItem = col("item"), iBlurb = col("blurb"),
+        iLink = col("link"), iMulti = col("multiple"), iSort = col("sortorder");
+
+  const roomOrder = new Map(); // room -> lowest SortOrder seen
+  const items = [];
+  const seen = new Map(); // id -> count, to keep ids unique
+
+  for (const r of rows.slice(1)){
+    const name = (r[iItem] || "").trim();
+    if (!name) continue;
+    const room = (r[iRoom] || "").trim() || "Other";
+    const blurb = (r[iBlurb] || "").trim();
+    const link = (r[iLink] || "").trim();
+    const multi = (r[iMulti] || "").trim().toUpperCase() === "TRUE";
+    const sortVal = parseFloat(r[iSort]);
+    const order = isNaN(sortVal) ? 9999 : sortVal;
+    if (!roomOrder.has(room) || order < roomOrder.get(room)) roomOrder.set(room, order);
+
+    let id = slug(name);
+    const n = (seen.get(id) || 0) + 1; seen.set(id, n);
+    if (n > 1) id += "-" + n;
+
+    const it = { group: room, id, name };
+    if (blurb) it.note = blurb;
+    if (link) it.link = link;
+    if (multi) it.multi = true;
+    items.push(it);
+  }
+
+  items.sort((a, b) => roomOrder.get(a.group) - roomOrder.get(b.group));
+  return items;
+}
 
 const list = document.getElementById("list"), statusEl = document.getElementById("status");
 let claimed = new Set();
@@ -207,7 +244,8 @@ function parseCSV(t){
 async function load(){
   claimed = new Set(mine());
   try {
-    ITEMS = await (await fetch("items.json")).json();
+    const text = await (await fetch(ITEMS_CSV_URL)).text();
+    ITEMS = parseItemsCSV(text);
   } catch(e){
     say("Could not load the item list. Please refresh.");
     return;
