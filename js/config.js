@@ -2,8 +2,14 @@
 // code. Edit the sheets to change what's on the page; edit this file only
 // to change a URL, a wording rule, or a layout constant.
 
-// The item list. Columns expected: Room, Item, Blurb, Link, Multiple, SortOrder.
+// The item list. Columns expected: Room, Item, Blurb, Link, Multiple.
 export const ITEMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrc23Xb_w5tHJiaE-GLbMQ9rPaGd_1lQTeG8-PYydDymOqVYIki_qRZ0kWVHIoryPVxDJ2bQhTtHgT/pub?gid=619533425&single=true&output=csv";
+
+// The room list: display order and an optional subheading blurb for each
+// room. Columns expected: Room, Blurb, SortOrder. A room named in the
+// items sheet with no matching row here still renders, just last and
+// without a subheading.
+export const ROOMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrc23Xb_w5tHJiaE-GLbMQ9rPaGd_1lQTeG8-PYydDymOqVYIki_qRZ0kWVHIoryPVxDJ2bQhTtHgT/pub?gid=1295316913&single=true&output=csv";
 
 // The Google Form that records a claim, and the responses sheet published
 // as CSV so every visitor can see what's already taken. Leave FORM_URL

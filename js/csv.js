@@ -11,7 +11,10 @@ export function parseCSV(text){
       if (ch === '"'){
         if (text[i + 1] === '"'){ field += '"'; i++; }
         else inQuotes = false;
-      } else {
+      } else if (ch !== "\r"){
+        // Multi-line cells (Alt+Enter in Sheets) keep their newline here,
+        // since it's inside quotes rather than ending the row. The \r half
+        // of a Windows-style \r\n is dropped so only \n survives.
         field += ch;
       }
     } else if (ch === '"'){
@@ -42,8 +45,42 @@ export function isSafeUrl(url){
   catch(e){ return false; }
 }
 
-// Parses the published items sheet into a flat, ordered list of items:
-// [{ group, id, name, note?, link?, multi? }, ...]
+// Parses the published rooms sheet into an ordered list of room metadata:
+// [{ name, blurb?, order }, ...], sorted by SortOrder (rows with no valid
+// number sort last, in sheet order relative to each other).
+export function parseRoomsCSV(text){
+  const rows   = parseCSV(text);
+  const header = rows[0].map(h => h.trim().toLowerCase());
+  const colIndex = name => header.indexOf(name);
+
+  const col = {
+    room:  colIndex("room"),
+    blurb: colIndex("blurb"),
+    sort:  colIndex("sortorder"),
+  };
+
+  const rooms = [];
+  for (const r of rows.slice(1)){
+    const name = (r[col.room] || "").trim();
+    if (!name) continue;
+
+    const blurb = (r[col.blurb] || "").trim();
+    const sortValue = parseFloat(r[col.sort]);
+    const order = Number.isNaN(sortValue) ? 9999 : sortValue;
+
+    const room = { name, order };
+    if (blurb) room.blurb = blurb;
+    rooms.push(room);
+  }
+
+  // Stable sort: rooms with the same (or no) SortOrder keep their sheet order.
+  rooms.sort((a, b) => a.order - b.order);
+  return rooms;
+}
+
+// Parses the published items sheet into a flat, unordered list of items:
+// [{ group, id, name, note?, link?, multi? }, ...]. Room order and
+// subheadings come from parseRoomsCSV, not from this list.
 export function parseItemsCSV(text){
   const rows   = parseCSV(text);
   const header = rows[0].map(h => h.trim().toLowerCase());
@@ -55,12 +92,10 @@ export function parseItemsCSV(text){
     blurb: colIndex("blurb"),
     link:  colIndex("link"),
     multi: colIndex("multiple"),
-    sort:  colIndex("sortorder"),
   };
 
-  const roomOrder = new Map(); // room name -> lowest SortOrder seen for it
-  const seenIds   = new Map(); // id -> how many times we've generated it, so duplicates get suffixed
-  const parsed    = [];
+  const seenIds = new Map(); // id -> how many times we've generated it, so duplicates get suffixed
+  const parsed  = [];
 
   for (const r of rows.slice(1)){
     const name = (r[col.item] || "").trim();
@@ -70,10 +105,6 @@ export function parseItemsCSV(text){
     const blurb = (r[col.blurb] || "").trim();
     const link  = (r[col.link] || "").trim();
     const multi = (r[col.multi] || "").trim().toUpperCase() === "TRUE";
-
-    const sortValue = parseFloat(r[col.sort]);
-    const order = Number.isNaN(sortValue) ? 9999 : sortValue;
-    if (!roomOrder.has(room) || order < roomOrder.get(room)) roomOrder.set(room, order);
 
     let id = slugify(name);
     const count = (seenIds.get(id) || 0) + 1;
@@ -87,7 +118,5 @@ export function parseItemsCSV(text){
     parsed.push(item);
   }
 
-  // Stable sort: keeps each room's items in sheet order, just reorders the rooms.
-  parsed.sort((a, b) => roomOrder.get(a.group) - roomOrder.get(b.group));
   return parsed;
 }

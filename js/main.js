@@ -1,14 +1,15 @@
-import { ITEMS_CSV_URL, SHEET_CSV_URL, MIN_COLUMN_WIDTH, COLUMN_GAP } from "./config.js";
-import { parseCSV, parseItemsCSV } from "./csv.js";
+import { ITEMS_CSV_URL, ROOMS_CSV_URL, SHEET_CSV_URL, MIN_COLUMN_WIDTH, COLUMN_GAP } from "./config.js";
+import { parseCSV, parseItemsCSV, parseRoomsCSV } from "./csv.js";
 import { renderRooms } from "./render.js";
 import { readLocalClaims } from "./claim.js";
 
 const list     = document.getElementById("list");
 const statusEl = document.getElementById("status");
 
-let items   = [];        // parsed from ITEMS_CSV_URL
-let claimed = new Set();  // ids currently taken, from the responses sheet + this device
-let roomEls = [];         // rendered <section class="room"> elements, before layout() packs them
+let items    = [];        // parsed from ITEMS_CSV_URL
+let roomMeta = [];         // parsed from ROOMS_CSV_URL: room order + subheadings
+let claimed  = new Set();  // ids currently taken, from the responses sheet + this device
+let roomEls  = [];         // rendered <section class="room"> elements, before layout() packs them
 
 function say(message){
   statusEl.textContent = message;
@@ -51,13 +52,18 @@ window.addEventListener("resize", () => {
 
 function render(){
   const ctx = { claimed, say, rerender: render };
-  roomEls = renderRooms(items, ctx);
+  roomEls = renderRooms(items, roomMeta, ctx);
   layout();
 }
 
 async function loadItems(){
   const text = await (await fetch(ITEMS_CSV_URL)).text();
   items = parseItemsCSV(text);
+}
+
+async function loadRooms(){
+  const text = await (await fetch(ROOMS_CSV_URL)).text();
+  roomMeta = parseRoomsCSV(text);
 }
 
 async function loadClaimed(){
@@ -77,6 +83,14 @@ async function init(){
   } catch (e) {
     say("Could not load the item list. Please refresh.");
     return;
+  }
+
+  try {
+    await loadRooms();
+  } catch (e) {
+    // Not fatal: rooms still render, just in items-sheet order and with
+    // no subheadings, so a broken Rooms sheet doesn't take down the page.
+    roomMeta = [];
   }
   render();
 
