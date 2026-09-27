@@ -20,9 +20,6 @@ export const ENTRY_NAME    = "entry.1905366713";
 export const ENTRY_NOTES   = "entry.1819125415";
 export const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn4-SZ7JhozDiIcdt-UnzqwP_S7ISGYS91qZ7rl0FrgQplcwOrh4aKyfq_FWwvBbR7wtTLCxVyIevY/pub?gid=2135754539&single=true&output=csv";
 
-// The one room name that gets "chip in" wording instead of "get" wording.
-export const FUND_GROUP = "Chip in fund";
-
 // A guest's own claims are remembered on this device for this long, to
 // bridge the delay before the published responses sheet catches up.
 export const REMEMBER_KEY = "registry-mine-v2";

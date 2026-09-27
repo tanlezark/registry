@@ -1,4 +1,4 @@
-import { FORM_URL, ENTRY_ITEM, ENTRY_NAME, ENTRY_NOTES, FUND_GROUP, REMEMBER_KEY, REMEMBER_MS } from "./config.js";
+import { FORM_URL, ENTRY_ITEM, ENTRY_NAME, ENTRY_NOTES, REMEMBER_KEY, REMEMBER_MS } from "./config.js";
 
 // Bridges the gap between submitting a claim and the published responses
 // sheet catching up, so the guest who just claimed something sees it as
@@ -27,12 +27,10 @@ function rememberLocalClaim(id){
 }
 
 export function buttonLabel(item){
-  if (item.group === FUND_GROUP) return "I'll chip in";
   return item.multi ? "I'll get one" : "I'll get this";
 }
 
 export function confirmationMessage(item){
-  if (item.group === FUND_GROUP) return "Thank you. We have noted it.";
   if (item.multi) return `Thank you. We've noted you're getting a ${item.name.toLowerCase()}.`;
   return `Thank you. ${item.name} is marked as yours.`;
 }
