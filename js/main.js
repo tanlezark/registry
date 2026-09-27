@@ -20,12 +20,25 @@ function say(message){
 // packed here in JS instead: measure the available width, work out how
 // many MIN_COLUMN_WIDTH-or-wider columns fit, then drop each room into
 // whichever column is currently shortest.
-function layout(){
+// Tracks the column count actually on screen, so a resize event that
+// doesn't change it (see below) can skip touching the DOM entirely.
+let currentColumnCount = 0;
+
+function layout(force){
   const available = list.getBoundingClientRect().width || window.innerWidth;
   const columnCount = Math.max(
     1,
     Math.floor((available + COLUMN_GAP) / (MIN_COLUMN_WIDTH + COLUMN_GAP))
   );
+
+  // Mobile browsers (Firefox on Android in particular) fire "resize" as
+  // their address bar shows/hides while scrolling, even though nothing
+  // about the layout actually needs to change. Rebuilding the whole list
+  // on every one of those was the cause of the page jumping mid-scroll,
+  // so skip the rebuild unless the column count, or the room content
+  // itself (force = true, from render()), has genuinely changed.
+  if (!force && columnCount === currentColumnCount) return;
+  currentColumnCount = columnCount;
 
   list.innerHTML = "";
   const columns = Array.from({ length: columnCount }, () => {
@@ -53,7 +66,7 @@ window.addEventListener("resize", () => {
 function render(){
   const ctx = { claimed, say, rerender: render };
   roomEls = renderRooms(items, roomMeta, ctx);
-  layout();
+  layout(true);
 }
 
 async function loadItems(){
