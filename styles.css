@@ -59,7 +59,7 @@ h1{
   justify-content: space-between;
   align-items: baseline;
   gap: 1em;
-  margin-bottom: .6em;
+  margin-bottom: .85em;
 }
 h2{
   font: 600 2em/1.1 Fraunces, Georgia, serif;
@@ -72,7 +72,7 @@ h2{
 /* Static text block under the list. Reuses the room card look, but centred
    at the same width as the header so it doesn't stretch across a wide page. */
 .closing{ max-width: 60ch; margin: 1.5rem auto 0; }
-.closing h2{ margin-bottom: .6em; }
+.closing h2{ margin-bottom: .85em; }
 .closing p{ margin: 0 0 1em; }
 
 /* ---------- Item rows ---------- */
