@@ -85,6 +85,14 @@ li:last-child{ border-bottom: 0; }
 .link{ display: inline-block; margin-top: .2em; font-size: .9em; color: var(--accent); }
 .tag{ color: var(--muted); font-size: .95em; white-space: nowrap; }
 .taken .name, .taken .note{ text-decoration: line-through; color: var(--muted); font-weight: 400; }
+/* Taken rows fade back, shrink slightly and nearly lose their padding, so
+   the items still available stand out and stay easy to find. */
+.taken{ padding: .1em 0; opacity: .65; font-size: .85em; }
+/* A completed room has already shrunk the whole card, so its rows stay at
+   the card's size rather than shrinking a second time. */
+.room.done .taken{ font-size: 1em; }
+/* A completed room's title is struck through and muted, like its items. */
+.room.done h2{ text-decoration: line-through; color: var(--muted); }
 
 /* ---------- Buttons & the claim form ---------- */
 button{
